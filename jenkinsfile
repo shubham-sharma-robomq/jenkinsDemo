@@ -1,0 +1,46 @@
+pipeline{
+    agent any
+    parameters{
+        string(name:'Num1', defaultValue:'', description:'Enter first number')
+        string(name:'Num2', defaultValue:'', description:'Enter second number')
+    }
+    stages{
+        stage ('Addition') {
+            steps{
+                script{
+                    def num1 = Num1.ToInteger()
+                    def num2 = Num2.ToInteger()
+                    def sum = num1 + num2
+                    echo "The sum of ${num1} and ${num2} is ${sum}"
+                    writeFile file: "apps/sum.txt", text:"${sum}"
+                }
+            }
+        }
+        stage ('Creating Directory'){
+            steps{
+                script{
+                    sh "pwd"
+                    sh "ls"
+                    sh "mkdir -p apps"
+                }
+            }
+        }
+        stage ('Creating file and storing data'){
+            steps{
+                script{
+                    def contents = readFile(file: 'apps/sum.txt').trim()
+                    writeFile file: 'apps/abc.txt', text: "The sum of numbers is ${contents}"
+                }
+            }
+        }
+        stage ('Printing file data'){
+            steps{
+                script{
+                    sh "pwd"
+                    sh "ls"
+                    sh "cat apps/abc.txt"
+                }
+            }
+        }
+    }
+}
