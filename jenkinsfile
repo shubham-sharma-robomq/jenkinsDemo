@@ -8,8 +8,8 @@ pipeline{
         stage ('Addition') {
             steps{
                 script{
-                    def num1 = Num1.ToInteger()
-                    def num2 = Num2.ToInteger()
+                    def num1 = Num1.toInteger()
+                    def num2 = Num2.toInteger()
                     def sum = num1 + num2
                     echo "The sum of ${num1} and ${num2} is ${sum}"
                     writeFile file: "apps/sum.txt", text:"${sum}"
